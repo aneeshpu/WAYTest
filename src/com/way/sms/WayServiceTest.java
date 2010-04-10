@@ -21,7 +21,7 @@ public class WayServiceTest {
 	@Test
 	public void replies_to_way_requests_with_current_location() throws Exception {
 		final String from = "1234";
-		final String currentGeoLocation = "#410, Brigade Millenium";
+		final GeoLocation currentGeoLocation = new GeoLocation("#410, Brigade Millenium", null);
 		
 		final Context context = createMock(Context.class);
 		final WaySms waySms = mockWaySms(from);
@@ -43,7 +43,7 @@ public class WayServiceTest {
 		return waySms;
 	}
 
-	private GeoLocationService mockGeoLocationService(Context context, String currentGeoLocation) {
+	private GeoLocationService mockGeoLocationService(Context context, GeoLocation currentGeoLocation) {
 		final GeoLocationService geoLocationService = createMock(GeoLocationService.class);
 		expect(geoLocationService.getCurrentGeoLocation(context)).andReturn(currentGeoLocation);
 		
@@ -51,9 +51,9 @@ public class WayServiceTest {
 		return geoLocationService;
 	}
 
-	private SMSService mockSmsService(String to, String message) {
+	private SMSService mockSmsService(String to, GeoLocation currentGeoLocation) {
 		final SMSService smsService = createMock(SMSService.class);
-		expect(smsService.send(to, message)).andReturn(true);
+		expect(smsService.send(to, currentGeoLocation.toString())).andReturn(true);
 		
 		replay(smsService);
 		return smsService;

@@ -28,12 +28,13 @@ public class GeoLocationServiceTest {
 		final LocationManager mockLocationManager = mockLocationManager(mockLocation);
 		final Context context = mockContext(mockLocationManager);
 		final String expectedAddress = "#410, Brigade Millenium";
-		final Address mockAddress = mockAddress(expectedAddress);
+		String addressLine1 = "Bengaluru, Karnataka";
+		final Address mockAddress = mockAddress(expectedAddress, addressLine1);
 		final MyGeoCoder mockMyGeoCoder = mockGeocoder(context,latitude, longitude, mockAddress);
 		
-		final String address = new GeoLocationService(mockMyGeoCoder).getCurrentGeoLocation(context);
+		final GeoLocation address = new GeoLocationService(mockMyGeoCoder).getCurrentGeoLocation(context);
 		
-		assertEquals(expectedAddress.getClass(), address.getClass());
+		assertEquals(GeoLocation.class, address.getClass());
 		
 		verify(context);
 		verify(mockLocation);
@@ -42,8 +43,10 @@ public class GeoLocationServiceTest {
 		verify(mockAddress);
 	}
 
-	private Address mockAddress(String address) {
+	private Address mockAddress(String address, String addressLine1) {
 		final Address mockAddress = createMock(Address.class);
+		expect(mockAddress.getAddressLine(0)).andReturn(address);
+		expect(mockAddress.getAddressLine(1)).andReturn(addressLine1);
 		replay(mockAddress);
 		return mockAddress;
 	}
