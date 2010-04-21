@@ -4,6 +4,7 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.classextension.EasyMock.createMock;
 import static org.easymock.classextension.EasyMock.replay;
 import static org.easymock.classextension.EasyMock.verify;
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -26,6 +27,55 @@ public class WaySmsTest {
 		
 		assertTrue(waySms.isWayRequest());
 		verify(smsMessage);
+	}
+	
+	@Test
+	public void ignores_white_spaces_in_the_request() throws Exception {
+		final SmsMessage smsMessage = createMock(SmsMessage.class);
+		expect(smsMessage.getMessageBody()).andReturn("Where            are  you ");
+		replay(smsMessage);
+		final WaySms waySms = new WaySms(smsMessage);
+		
+		assertTrue(waySms.isWayRequest());
+		verify(smsMessage);
+		
+	}
+	
+	@Test
+	public void question_marks_are_allowed_at_the_end() throws Exception {
+		final SmsMessage smsMessage = createMock(SmsMessage.class);
+		expect(smsMessage.getMessageBody()).andReturn("Where            are  you?");
+		replay(smsMessage);
+		final WaySms waySms = new WaySms(smsMessage);
+		
+		assertTrue(waySms.isWayRequest());
+		verify(smsMessage);
+		
+	}
+	
+	@Test
+	public void more_than_one_question_marks_are_allowed_in_the_end() throws Exception {
+		final SmsMessage smsMessage = createMock(SmsMessage.class);
+		expect(smsMessage.getMessageBody()).andReturn("Where            are  you   ????");
+		replay(smsMessage);
+		final WaySms waySms = new WaySms(smsMessage);
+		
+		assertTrue(waySms.isWayRequest());
+		verify(smsMessage);
+		
+	}
+	
+	
+	@Test
+	public void exclamation_marks_are_allowed_at_the_end() throws Exception {
+		final SmsMessage smsMessage = createMock(SmsMessage.class);
+		expect(smsMessage.getMessageBody()).andReturn("Where            are  you!");
+		replay(smsMessage);
+		final WaySms waySms = new WaySms(smsMessage);
+		
+		assertTrue(waySms.isWayRequest());
+		verify(smsMessage);
+		
 	}
 	
 	@Test
