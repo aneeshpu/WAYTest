@@ -44,7 +44,7 @@ public class FacebookTextMessageTest {
 
 		final FacebookTextMessage facebookTextMessage = new FacebookTextMessage(smsMessage, new WayRequest(), locatorMock);
 
-		assertThat(facebookTextMessage.generateReply(), is(equalTo("Wall Aneesh Pu My last known location according to network is, #410, Brigade Millenium")));
+		assertThat(facebookTextMessage.generateReply(), is(equalTo("Wall My last known location according to network is, #410, Brigade Millenium")));
 		verify(locatorMock);
 	}
 
@@ -58,7 +58,7 @@ public class FacebookTextMessageTest {
 	private SmsMessage nonWayRequest() {
 		final SmsMessage smsMessage = EasyMock.createMock(SmsMessage.class);
 
-		expect(smsMessage.getMessageBody()).andReturn("Aneesh Pu Wrote on your Facebook Wall:\nHello world\nReply to post on Aneesh's wall.\nReply \"sub\" to subscribe to Aneesh's status");
+		expect(smsMessage.getMessageBody()).andReturn("Aneesh Pu wrote on your Facebook Wall:\nHello world\n\nReply to post on Aneesh's wall.\n\nReply \"sub\" to subscribe to Aneesh's status.");
 		replay(smsMessage);
 
 		return smsMessage;
@@ -67,7 +67,7 @@ public class FacebookTextMessageTest {
 	private SmsMessage wayRequest() {
 		final SmsMessage smsMessage = EasyMock.createMock(SmsMessage.class);
 
-		expect(smsMessage.getMessageBody()).andReturn("Aneesh Pu Wrote on your Facebook Wall:\nWhere are you\nReply to post on Aneesh's wall.\nReply \"sub\" to subscribe to Aneesh's status");
+		expect(smsMessage.getMessageBody()).andReturn("Aneesh Pu wrote on your Facebook Wall:\nWhere are you\n\nReply to post on Aneesh's wall.\n\nReply \"sub\" to subscribe to Aneesh's status.").anyTimes();
 		replay(smsMessage);
 
 		return smsMessage;
@@ -76,8 +76,8 @@ public class FacebookTextMessageTest {
 	@Test
 	public void reg_ex_matching_facebook_messages() throws Exception {
 
-		final Pattern pattern = Pattern.compile("([a-zA-Z ]*) Wrote on your Facebook Wall:\n([a-zA-Z ]*)\nReply to post on ([a-zA-Z]*)'s wall.\nReply \"sub\" to subscribe to ([a-zA-Z]*)'s status");
-		final Matcher matcher = pattern.matcher("Aneesh Pu Wrote on your Facebook Wall:\nWhere are you\nReply to post on Aneesh's wall.\nReply \"sub\" to subscribe to Aneesh's status");
+		final Pattern pattern = Pattern.compile("([a-zA-Z ]*) wrote on your Facebook Wall:\n([a-zA-Z ]*)\n*Reply to post on ([a-zA-Z]*)'s wall.\nReply \"sub\" to subscribe to ([a-zA-Z]*)'s status.");
+		final Matcher matcher = pattern.matcher("Aneesh Pu wrote on your Facebook Wall:\nWhere are you\n\nReply to post on Aneesh's wall.\nReply \"sub\" to subscribe to Aneesh's status.");
 		assertThat(matcher.matches(), is(true));
 
 		assertThat(matcher.group(1), is(equalTo("Aneesh Pu")));
