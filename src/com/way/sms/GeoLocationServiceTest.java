@@ -32,7 +32,7 @@ public class GeoLocationServiceTest {
 		final Address mockAddress = mockAddress(expectedAddress, addressLine1);
 		final MyGeoCoder mockMyGeoCoder = mockGeocoder(context,latitude, longitude, mockAddress);
 		
-		final GeoLocation address = new GeoLocationService(mockMyGeoCoder).getCurrentGeoLocation(context);
+		final GeoLocation address = new Locator(mockMyGeoCoder,context).getCurrentGeoLocation();
 		
 		assertEquals(GeoLocation.class, address.getClass());
 		
