@@ -1,18 +1,26 @@
 package com.way.sms;
 
-import static org.junit.Assert.*;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.classextension.EasyMock.replay;
+import static org.easymock.classextension.EasyMock.verify;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.easymock.classextension.EasyMock;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.powermock.api.easymock.PowerMock;
+import org.powermock.core.classloader.annotations.PrepareForTest;
 
 import android.telephony.SmsMessage;
-import static org.hamcrest.CoreMatchers.*;
+import android.util.Log;
 
-import static org.easymock.classextension.EasyMock.*;
-
+@RunWith(org.powermock.modules.junit4.PowerMockRunner.class)
+@PrepareForTest(Log.class)
 public class FacebookTextMessageTest {
 
 	@Test
@@ -21,6 +29,9 @@ public class FacebookTextMessageTest {
 		final SmsMessage smsMessage = wayRequest();
 		final FacebookTextMessage facebookTextMessage = new FacebookTextMessage(smsMessage, new WayRequest(), EasyMock.createMock(Locator.class));
 
+		PowerMock.mockStatic(Log.class);
+		EasyMock.expect(Log.d("WAY", "foo")).andReturn(0);
+		
 		assertThat(facebookTextMessage.isWayRequest(), is(true));
 
 		verify(smsMessage);
@@ -29,6 +40,8 @@ public class FacebookTextMessageTest {
 	@Test
 	public void identifies_a_non_way_request() throws Exception {
 		final SmsMessage smsMessage = nonWayRequest();
+		PowerMock.mockStatic(Log.class);
+		EasyMock.expect(Log.d("WAY", "foo")).andReturn(0);
 		final FacebookTextMessage facebookTextMessage = new FacebookTextMessage(smsMessage, new WayRequest(),EasyMock.createMock(Locator.class));
 
 		assertThat(facebookTextMessage.isWayRequest(), is(false));
