@@ -88,7 +88,7 @@ public class TextMessageHandlerTest {
 
 		expect(regularTextMessage.from()).andReturn(from);
 		expect(regularTextMessage.isWayRequest()).andReturn(isWayRequest);
-		expect(regularTextMessage.generateReply()).andReturn(reply);
+		expect(regularTextMessage.reply()).andReturn(reply);
 		
 		replay(regularTextMessage);
 		return regularTextMessage;

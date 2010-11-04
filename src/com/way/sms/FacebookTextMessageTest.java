@@ -56,7 +56,7 @@ public class FacebookTextMessageTest {
 
 		final FacebookTextMessage facebookTextMessage = new FacebookTextMessage(smsMessage, new WayRequest(), locatorMock);
 
-		assertThat(facebookTextMessage.generateReply(), is(equalTo("Wall My last known location according to network is, #410, Brigade Millenium")));
+		assertThat(facebookTextMessage.reply(), is(equalTo("Wall My last known location according to network is, #410, Brigade Millenium")));
 		verify(locatorMock);
 	}
 

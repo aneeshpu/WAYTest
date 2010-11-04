@@ -139,7 +139,7 @@ public class RegularTextMessageTest {
 		final Locator locator = mockLocator();
 		final RegularTextMessage waySms = new RegularTextMessage(smsMessage, locator, new WayRequest());
 
-		final String reply = waySms.generateReply();
+		final String reply = waySms.reply();
 
 		verify(locator);
 		assertThat(reply, is(equalTo("My last known location according to network is, #410, Brigade Millenium")));
@@ -155,7 +155,7 @@ public class RegularTextMessageTest {
 
 		final RegularTextMessage waySms = new RegularTextMessage(smsMessage, locator, new WayRequest());
 
-		final String reply = waySms.generateReply();
+		final String reply = waySms.reply();
 
 		verify(locator);
 		assertThat(reply, is(equalTo("My last known location according to network is, #410, Brigade Millenium")));

@@ -36,7 +36,7 @@ public class WayServiceTest {
 		final RegularTextMessage waySms = createMock(RegularTextMessage.class);
 		expect(waySms.from()).andReturn(from);
 		expect(waySms.isWayRequest()).andReturn(true);
-		expect(waySms.generateReply()).andReturn("My last known location according to network is, #410, Brigade Millenium");
+		expect(waySms.reply()).andReturn("My last known location according to network is, #410, Brigade Millenium");
 		
 		replay(waySms);
 		return waySms;

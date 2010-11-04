@@ -23,6 +23,32 @@ public class XMPPChatMessageTest {
 		verify(message);
 
 	}
+	
+	@Test
+	public void identifies_a_non_way_request() throws Exception {
+		Message message = xmppChatMessage_Not_ContainingTextWhereAreYou();
+
+		XMPPChatMessage xmppChatMessage = new XMPPChatMessage(message, mockWayRequestThatRepliesInNegative());
+		assertThat("How are you was identified as a WAY request!", xmppChatMessage.isWayRequest(), is(false));
+
+		verify(message);
+		
+	}
+
+	private WayRequest mockWayRequestThatRepliesInNegative() {
+		WayRequest wayRequest = EasyMock.createMock(WayRequest.class);
+		expect(wayRequest.isWayRequest(isA(String.class))).andReturn(false);
+
+		replay(wayRequest);
+		return wayRequest;
+	}
+
+	private Message xmppChatMessage_Not_ContainingTextWhereAreYou() {
+		Message message = createMock(Message.class);
+		expect(message.getBody()).andReturn("How are you");
+		replay(message);
+		return message;
+	}
 
 	private Message xmppChatMessageContainingTextWhereAreYou() {
 		Message message = createMock(Message.class);
