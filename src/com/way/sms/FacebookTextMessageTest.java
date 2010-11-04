@@ -30,8 +30,7 @@ public class FacebookTextMessageTest {
 		final FacebookTextMessage facebookTextMessage = new FacebookTextMessage(smsMessage, new WayRequest(), EasyMock.createMock(Locator.class));
 
 		PowerMock.mockStatic(Log.class);
-		EasyMock.expect(Log.d("WAY", "foo")).andReturn(0);
-		
+
 		assertThat(facebookTextMessage.isWayRequest(), is(true));
 
 		verify(smsMessage);
@@ -42,7 +41,7 @@ public class FacebookTextMessageTest {
 		final SmsMessage smsMessage = nonWayRequest();
 		PowerMock.mockStatic(Log.class);
 		EasyMock.expect(Log.d("WAY", "foo")).andReturn(0);
-		final FacebookTextMessage facebookTextMessage = new FacebookTextMessage(smsMessage, new WayRequest(),EasyMock.createMock(Locator.class));
+		final FacebookTextMessage facebookTextMessage = new FacebookTextMessage(smsMessage, new WayRequest(), EasyMock.createMock(Locator.class));
 
 		assertThat(facebookTextMessage.isWayRequest(), is(false));
 
@@ -71,7 +70,9 @@ public class FacebookTextMessageTest {
 	private SmsMessage nonWayRequest() {
 		final SmsMessage smsMessage = EasyMock.createMock(SmsMessage.class);
 
-		expect(smsMessage.getMessageBody()).andReturn("Aneesh Pu wrote on your Facebook Wall:\nHello world\n\nReply to post on Aneesh's wall.\n\nReply \"sub\" to subscribe to Aneesh's status.");
+		expect(smsMessage.getMessageBody())
+				.andReturn(
+						"Aneesh Pu wrote on your Facebook Wall:\nHello world\n\nReply to post on Aneesh's wall.\n\nReply \"sub\" to subscribe to Aneesh's status.").anyTimes();
 		replay(smsMessage);
 
 		return smsMessage;
@@ -80,7 +81,10 @@ public class FacebookTextMessageTest {
 	private SmsMessage wayRequest() {
 		final SmsMessage smsMessage = EasyMock.createMock(SmsMessage.class);
 
-		expect(smsMessage.getMessageBody()).andReturn("Aneesh Pu wrote on your Facebook Wall:\nWhere are you\n\nReply to post on Aneesh's wall.\n\nReply \"sub\" to subscribe to Aneesh's status.").anyTimes();
+		expect(smsMessage.getMessageBody())
+				.andReturn(
+						"Aneesh Pu wrote on your Facebook Wall:\nWhere are you\n\nReply to post on Aneesh's wall.\n\nReply \"sub\" to subscribe to Aneesh's status.")
+				.anyTimes();
 		replay(smsMessage);
 
 		return smsMessage;
@@ -89,8 +93,10 @@ public class FacebookTextMessageTest {
 	@Test
 	public void reg_ex_matching_facebook_messages() throws Exception {
 
-		final Pattern pattern = Pattern.compile("([a-zA-Z ]*) wrote on your Facebook Wall:\n([a-zA-Z ]*)\n*Reply to post on ([a-zA-Z]*)'s wall.\nReply \"sub\" to subscribe to ([a-zA-Z]*)'s status.");
-		final Matcher matcher = pattern.matcher("Aneesh Pu wrote on your Facebook Wall:\nWhere are you\n\nReply to post on Aneesh's wall.\nReply \"sub\" to subscribe to Aneesh's status.");
+		final Pattern pattern = Pattern
+				.compile("([a-zA-Z ]*) wrote on your Facebook Wall:\n([a-zA-Z ]*)\n*Reply to post on ([a-zA-Z]*)'s wall.\nReply \"sub\" to subscribe to ([a-zA-Z]*)'s status.");
+		final Matcher matcher = pattern
+				.matcher("Aneesh Pu wrote on your Facebook Wall:\nWhere are you\n\nReply to post on Aneesh's wall.\nReply \"sub\" to subscribe to Aneesh's status.");
 		assertThat(matcher.matches(), is(true));
 
 		assertThat(matcher.group(1), is(equalTo("Aneesh Pu")));

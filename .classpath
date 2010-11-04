@@ -8,9 +8,9 @@
 	<classpathentry kind="lib" path="lib/javassist.jar"/>
 	<classpathentry kind="lib" path="lib/objenesis-1.2.jar"/>
 	<classpathentry kind="lib" path="lib/powermock-easymock-1.3.5-full.jar"/>
-	<classpathentry kind="lib" path="/home/aneeshpu/software/android-sdk-linux_86/platforms/android-7/android.jar"/>
 	<classpathentry kind="lib" path="lib/easymock-2.5.2.jar"/>
+	<classpathentry kind="lib" path="lib/easymockclassextension-2.4.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/WAY"/>
-	<classpathentry kind="lib" path="/home/aneeshpu/software/easymock/easymockclassextension2.4/easymockclassextension.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Android 2.2"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
